@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "doctor")
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class Doctor {
     @Column(nullable = false)
     private Profession profession;
 
-   @OneToMany(mappedBy = "registration")
+   @OneToMany(mappedBy = "doctor")
     private Set<Registration> registrations;
 
 

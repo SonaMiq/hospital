@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import java.util.Set;
 
 @Entity
+@Table(name = "patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,7 @@ public class Patient {
     @Enumerated(EnumType.ORDINAL)
     private BloodGroup bloodGroup;
 
-    @OneToMany(mappedBy = "registration")
+    @OneToMany(mappedBy = "patient")
     private Set<Registration> registrations;
 
     public String getName() {
