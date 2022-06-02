@@ -13,18 +13,19 @@ import java.util.Set;
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(nullable = false, length = 20)
     private String name;
     @Column(nullable = false, length = 30)
     private String surname;
     @Min(0)
     @Max(120)
-    private int age;
+    private Integer age;
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
     @Enumerated(EnumType.ORDINAL)
     private BloodGroup bloodGroup;
+    private String phone;
 
     @OneToMany(mappedBy = "patient")
     private Set<Registration> registrations;
@@ -45,11 +46,11 @@ public class Patient {
     }
 
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -67,6 +68,14 @@ public class Patient {
 
     public void setBloodGroup(BloodGroup bloodGroup) {
         this.bloodGroup = bloodGroup;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
 

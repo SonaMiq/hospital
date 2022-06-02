@@ -11,7 +11,7 @@ import java.util.Set;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false, length = 20)
     private String name;
@@ -40,6 +40,10 @@ public class Doctor {
 
     public Doctor() {
 
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

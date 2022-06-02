@@ -10,8 +10,9 @@ import java.sql.Date;
 public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private Date regDay;
+    private String time;
     @ManyToOne
     private Patient patient;
     @ManyToOne
@@ -41,6 +42,14 @@ public class Registration {
 
     public void setRegDay(Date regDay) {
         this.regDay = regDay;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Servicing getServicing() {
