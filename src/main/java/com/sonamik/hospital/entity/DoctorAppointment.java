@@ -12,12 +12,12 @@ public class DoctorAppointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private Date date;
     private String startTime;
     private String endTime;
     @Enumerated(EnumType.ORDINAL)
     private AppointmentStatus status=AppointmentStatus.FREE;
     private Long doctorId;
-    private Date date;
 
     public Integer getId() {
         return id;
@@ -29,6 +29,14 @@ public class DoctorAppointment {
 
     public void setStatus(AppointmentStatus status) {
         this.status = status;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getStartTime() {
@@ -55,11 +63,5 @@ public class DoctorAppointment {
         this.doctorId = doctorId;
     }
 
-    public Date getDate() {
-        return date;
-    }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
 }

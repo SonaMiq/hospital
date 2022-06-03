@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,27 +41,37 @@ public class UserService {
         return doctorRepo.findAll();
     }
 
-    public List<String> getFreeTimes(Long doctorId, Date date) {
-        if (!registrationRepo.findDatesByDoctorId(doctorId).contains(date)) {
-            return doctorAppointmentRepo.findFreeTimes(doctorId,null);
+    public List<DoctorAppointment> getFreeTimes(Long doctorId, Date date) {
+        Registration registration = registrationRepo.findRegistrationByDoctorIdAndRegDay(doctorId, date);
+        if (registration == null) {
+            int time = 9;
+            while (time < 18) {
+                if (time == 13) {
+                    time++;
+                }
+                DoctorAppointment doctorAppointment = new DoctorAppointment();
+                doctorAppointment.setDoctorId(doctorId);
+                doctorAppointment.setDate(date);
+                doctorAppointment.setStartTime(time + ":00");
+                doctorAppointment.setEndTime(time + ":30");
+                doctorAppointmentRepo.save(doctorAppointment);
+                time++;
+            }
         }
 
-        return doctorAppointmentRepo.findFreeTimes(doctorId,date);
+        return doctorAppointmentRepo.findDoctorAppointmentByDoctorIdAndDateAndStatus(doctorId, date, AppointmentStatus.FREE);
+
     }
 
+
     public Registration register(Long doctorId, Long patientId, Long servicingId, Registration registration) {
-        DoctorAppointment doctorAppointment;
-        if (!registrationRepo.findDatesByDoctorId(doctorId).contains(registration.getRegDay())){
-            doctorAppointment=doctorAppointmentRepo.findByDoctorIdAndDateAndStartTime(doctorId,null, registration.getTime());
-            doctorAppointment.setDate(registration.getRegDay());
-        }
-          else   doctorAppointment = doctorAppointmentRepo.findByDoctorIdAndDateAndStartTime(doctorId, registration.getRegDay(), registration.getTime());
+
+        DoctorAppointment doctorAppointment = doctorAppointmentRepo.findByDoctorIdAndDateAndStartTime(doctorId, registration.getRegDay(), registration.getTime());
         doctorAppointment.setStatus(AppointmentStatus.BUSY);
         doctorAppointmentRepo.save(doctorAppointment);
         registration.setDoctor(doctorRepo.findById(doctorId).get());
         registration.setPatient(patientRepo.findById(patientId).get());
         registration.setServicing(servicingRepo.findById(servicingId).get());
-        registration.setDoctorAppointment(doctorAppointment);
         return registrationRepo.save(registration);
     }
 

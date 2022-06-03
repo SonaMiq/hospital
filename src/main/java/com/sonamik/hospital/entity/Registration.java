@@ -23,9 +23,6 @@ public class Registration {
     @ManyToOne
     @JsonIgnore
     private Servicing servicing;
-    @ManyToOne
-    @JsonIgnore
-    private DoctorAppointment doctorAppointment;
 
     public Doctor getDoctor() {
         return doctor;
@@ -67,12 +64,6 @@ public class Registration {
         this.servicing = servicing;
     }
 
-    public DoctorAppointment getDoctorAppointment() {
-        return doctorAppointment;
-    }
-
-    public void setDoctorAppointment(DoctorAppointment doctorAppointment) {
-        this.doctorAppointment = doctorAppointment;
-    }
 }
+
 
