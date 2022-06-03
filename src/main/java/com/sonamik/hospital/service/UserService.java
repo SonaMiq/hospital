@@ -4,14 +4,13 @@ import com.sonamik.hospital.entity.Doctor;
 import com.sonamik.hospital.entity.DoctorAppointment;
 import com.sonamik.hospital.entity.Patient;
 import com.sonamik.hospital.entity.Registration;
-import com.sonamik.hospital.repo.DoctorAppointmentRepo;
-import com.sonamik.hospital.repo.DoctorRepo;
-import com.sonamik.hospital.repo.PatientRepo;
-import com.sonamik.hospital.repo.RegistrationRepo;
+import com.sonamik.hospital.enums.AppointmentStatus;
+import com.sonamik.hospital.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +23,8 @@ public class UserService {
     RegistrationRepo registrationRepo;
     @Autowired
     DoctorRepo doctorRepo;
+    @Autowired
+    ServicingRepo servicingRepo;
     @Autowired
     DoctorAppointmentRepo doctorAppointmentRepo;
 
@@ -39,17 +40,27 @@ public class UserService {
         return doctorRepo.findAll();
     }
 
-    public List<String> getFreeTimes(Long doctorId, Date date, String time) {
-        if (!registrationRepo.findByDoctorId(doctorId).contains(date)) {
-            return Init.getSchedule();
+    public List<String> getFreeTimes(Long doctorId, Date date) {
+        if (!registrationRepo.findDatesByDoctorId(doctorId).contains(date)) {
+            return doctorAppointmentRepo.findFreeTimes(doctorId,null);
         }
-        return doctorAppointmentRepo.findByDoctorIdAndBusy(doctorId,false);
+
+        return doctorAppointmentRepo.findFreeTimes(doctorId,date);
     }
 
-    public Registration register(Registration registration) {
-        DoctorAppointment doctorAppointment = doctorAppointmentRepo.findByDoctorIdAndStartTime(registration.getDoctor().getId(), registration.getTime());
-        doctorAppointment.setBusy(true);
+    public Registration register(Long doctorId, Long patientId, Long servicingId, Registration registration) {
+        DoctorAppointment doctorAppointment;
+        if (!registrationRepo.findDatesByDoctorId(doctorId).contains(registration.getRegDay())){
+            doctorAppointment=doctorAppointmentRepo.findByDoctorIdAndDateAndStartTime(doctorId,null, registration.getTime());
+            doctorAppointment.setDate(registration.getRegDay());
+        }
+          else   doctorAppointment = doctorAppointmentRepo.findByDoctorIdAndDateAndStartTime(doctorId, registration.getRegDay(), registration.getTime());
+        doctorAppointment.setStatus(AppointmentStatus.BUSY);
         doctorAppointmentRepo.save(doctorAppointment);
+        registration.setDoctor(doctorRepo.findById(doctorId).get());
+        registration.setPatient(patientRepo.findById(patientId).get());
+        registration.setServicing(servicingRepo.findById(servicingId).get());
+        registration.setDoctorAppointment(doctorAppointment);
         return registrationRepo.save(registration);
     }
 

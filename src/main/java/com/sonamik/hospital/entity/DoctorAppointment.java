@@ -1,6 +1,9 @@
 package com.sonamik.hospital.entity;
 
+import com.sonamik.hospital.enums.AppointmentStatus;
+
 import javax.persistence.*;
+import java.sql.Date;
 
 
 @Entity
@@ -11,16 +14,21 @@ public class DoctorAppointment {
     private Integer id;
     private String startTime;
     private String endTime;
-    private Boolean busy = false;///?????? get-set
-    @ManyToOne
-    private Doctor doctor;
+    @Enumerated(EnumType.ORDINAL)
+    private AppointmentStatus status=AppointmentStatus.FREE;
+    private Long doctorId;
+    private Date date;
 
-    public Boolean getBusy() {
-        return busy;
+    public Integer getId() {
+        return id;
     }
 
-    public void setBusy(Boolean busy) {
-        this.busy = busy;
+    public AppointmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
     }
 
     public String getStartTime() {
@@ -39,12 +47,19 @@ public class DoctorAppointment {
         this.endTime = endTime;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
+    public Long getDoctorId() {
+        return doctorId;
     }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

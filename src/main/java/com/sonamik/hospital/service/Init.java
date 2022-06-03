@@ -19,6 +19,7 @@ public class Init {
     DoctorAppointmentRepo doctorAppointmentRepo;
     DoctorAppointment doctorAppointment;
 
+
     private static List<String> schedule=new ArrayList<String>();
     private void addTimes(){
         schedule.add("09:00");
@@ -42,16 +43,15 @@ public class Init {
     }
     public void addSchedule(){
         addTimes();
-        Long doctorId;
        List<Doctor> doctors =doctorRepo.findAll();
         for (Doctor doctor:doctors) {
-            doctorAppointment.setDoctor(doctor);
             for (int i = 0; i < schedule.size()-1; i++) {
+                doctorAppointment =new DoctorAppointment();
+                doctorAppointment.setDoctorId(doctor.getId());
                 doctorAppointment.setStartTime(schedule.get(i));
                 doctorAppointment.setEndTime(schedule.get(i+1));
+                doctorAppointmentRepo.save(doctorAppointment);
             }
-                 doctorAppointmentRepo.save(doctorAppointment);
-
         }
     }
 

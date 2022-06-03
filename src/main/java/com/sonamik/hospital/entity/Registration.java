@@ -1,5 +1,6 @@
 package com.sonamik.hospital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sonamik.hospital.repo.PatientRepo;
 
 import javax.persistence.*;
@@ -14,11 +15,17 @@ public class Registration {
     private Date regDay;
     private String time;
     @ManyToOne
+    @JsonIgnore
     private Patient patient;
     @ManyToOne
+    @JsonIgnore
     private Doctor doctor;
     @ManyToOne
+    @JsonIgnore
     private Servicing servicing;
+    @ManyToOne
+    @JsonIgnore
+    private DoctorAppointment doctorAppointment;
 
     public Doctor getDoctor() {
         return doctor;
@@ -58,6 +65,14 @@ public class Registration {
 
     public void setServicing(Servicing servicing) {
         this.servicing = servicing;
+    }
+
+    public DoctorAppointment getDoctorAppointment() {
+        return doctorAppointment;
+    }
+
+    public void setDoctorAppointment(DoctorAppointment doctorAppointment) {
+        this.doctorAppointment = doctorAppointment;
     }
 }
 

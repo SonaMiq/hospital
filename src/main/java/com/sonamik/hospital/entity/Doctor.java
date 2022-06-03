@@ -1,5 +1,6 @@
 package com.sonamik.hospital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sonamik.hospital.enums.Department;
 import com.sonamik.hospital.enums.Profession;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Column(nullable = false, length = 20)
@@ -68,5 +70,13 @@ public class Doctor {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Profession getProfession() {
+        return profession;
+    }
+
+    public void setProfession(Profession profession) {
+        this.profession = profession;
     }
 }
