@@ -24,6 +24,14 @@ public class Registration {
     @JsonIgnore
     private Servicing servicing;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Doctor getDoctor() {
         return doctor;
     }

@@ -1,34 +1,36 @@
-package com.sonamik.hospital.entity;
+package com.sonamik.hospital.dto;
 
 import com.sonamik.hospital.enums.BloodGroup;
 import com.sonamik.hospital.enums.Gender;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.Set;
 
-@Entity
-@Table(name = "patient")
-public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PatientDto {
+
     private Long id;
-    @Column(nullable = false, length = 20)
     private String name;
-    @Column(nullable = false, length = 30)
     private String surname;
-    @Min(0)
-    @Max(120)
     private Integer age;
-    @Enumerated(EnumType.ORDINAL)
     private Gender gender;
-    @Enumerated(EnumType.ORDINAL)
     private BloodGroup bloodGroup;
     private String phone;
 
-    @OneToMany(mappedBy = "patient")
-    private Set<Registration> registrations;
+    public PatientDto(){
+
+    }
+
+    public PatientDto(String name, String surname, Integer age, Gender gender, BloodGroup bloodGroup, String phone) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.gender = gender;
+        this.bloodGroup = bloodGroup;
+        this.phone = phone;
+    }
 
     public Long getId() {
         return id;
@@ -49,10 +51,10 @@ public class Patient {
     public String getSurname() {
         return surname;
     }
+
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
 
     public Integer getAge() {
         return age;
@@ -86,4 +88,3 @@ public class Patient {
         this.phone = phone;
     }
 }
-

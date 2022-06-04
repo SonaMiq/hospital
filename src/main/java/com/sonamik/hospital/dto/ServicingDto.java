@@ -1,15 +1,22 @@
-package com.sonamik.hospital.entity;
+package com.sonamik.hospital.dto;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 
-@Entity
-public class Servicing {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ServicingDto {
+
     private Long id;
-    @Column(nullable = false, length = 50)
     private String name;
     private Long price;
+
+    public ServicingDto(){
+
+    }
+
+    public ServicingDto(String name, Long price) {
+
+        this.name = name;
+        this.price = price;
+    }
 
     public Long getId() {
         return id;
@@ -27,7 +34,7 @@ public class Servicing {
         this.name = name;
     }
 
-    public long getPrice() {
+    public Long getPrice() {
         return price;
     }
 
